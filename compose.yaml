@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  weatherapp-backend:
+    build: ./backend
+    container_name: weatherapp_backend
+    hostname: backend
+    ports:
+      - 9000:9000
+    networks:
+      - weatherapp
+    environment:
+      APPID: "3c1c25d36b4d2706a3647a591e83717c"
+      # MAP_ENDPOINT
+      # TARGET_CITY
+
+  weatherapp-frontend:
+    image: weatherapp_frontend
+    build: ./frontend
+    container_name: weatherapp_frontend
+    environment:
+      ENDPOINT: "http://localhost:9000/api"
+    networks:
+      - weatherapp
+    ports:
+      - 8000:8000
+
+networks:
+  weatherapp: {}
