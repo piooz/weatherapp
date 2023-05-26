@@ -11,8 +11,11 @@ services:
       - weatherapp
     environment:
       APPID: "3c1c25d36b4d2706a3647a591e83717c"
-      # MAP_ENDPOINT
-      # TARGET_CITY
+      # MAP_ENDPOINT:
+      # TARGET_CITY:
+    volumes:
+      - ./backend:/app
+    command: npm run dev
 
   weatherapp-frontend:
     image: weatherapp_frontend
@@ -24,6 +27,8 @@ services:
       - weatherapp
     ports:
       - 8000:8000
+    volumes:
+      - ./frontend:/app
 
 networks:
   weatherapp: {}
