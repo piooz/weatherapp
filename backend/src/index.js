@@ -7,7 +7,7 @@ const cors = require('kcors',);
 
 const appId = process.env.APPID || '';
 const mapURI = process.env.MAP_ENDPOINT || 'http://api.openweathermap.org/data/2.5';
-const targetCity = process.env.TARGET_CITY || 'Lodz,pl';
+// const targetCity = process.env.TARGET_CITY || 'Lodz,pl';
 
 const port = process.env.PORT || 9000;
 
@@ -16,15 +16,13 @@ const app = new Koa();
 app.use(cors(),);
 
 const fetchWeather = async (lon, lat,) => {
-  // console.log(lon, lat,);
-  const endpoint = `${mapURI}/weather?q=${targetCity}&lon=${lon}&lat=${lat}&appid=${appId}&`;
+  const endpoint = `${mapURI}/weather?lon=${lon}&lat=${lat}&appid=${appId}&`;
   const response = await fetch(endpoint,);
 
   return response ? response.json() : {};
 };
 
 router.get('/api/weather', async (ctx,) => {
-  // console.log(ctx.request.query,);
   const weatherData = await fetchWeather(ctx.request.query.lon, ctx.request.query.lat,);
 
   ctx.type = 'application/json; charset=utf-8';

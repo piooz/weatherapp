@@ -6,15 +6,9 @@ const geoAPI = navigator.geolocation;
 
 const getWeatherFromApi = async (longitude, latitude) => {
   try {
-    const url = new URL(`${baseURL}/weather`);
-    const params = { lon: longitude, lat: latitude };
-    Object.keys(params).forEach((key) => url.searchParams.append(key, params[key]));
-
-    // const response = await fetch(`${baseURL}/weather?lat=12&lon=3`);
-    const response = await fetch(url);
+    const response = await fetch(`${baseURL}/weather?lat=${longitude}&lon=${latitude}`);
     return response.json();
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(error);
   }
 
