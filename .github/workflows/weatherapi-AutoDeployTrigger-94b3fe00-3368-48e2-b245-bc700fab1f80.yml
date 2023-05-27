@@ -1,0 +1,42 @@
+name: Trigger auto deployment for weatherapi
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - 'backend/**'
+    - '.github/workflows/weatherapi-AutoDeployTrigger-94b3fe00-3368-48e2-b245-bc700fab1f80.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.WEATHERAPI_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}/backend 
+          registryUrl: pzuchowski000.azurecr.io
+          registryUsername: ${{ secrets.WEATHERAPI_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.WEATHERAPI_REGISTRY_PASSWORD }}
+          containerAppName: weatherapi
+          resourceGroup: weatherapp
+          imageToBuild: pzuchowski000.azurecr.io/weatherapi:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+     
+
