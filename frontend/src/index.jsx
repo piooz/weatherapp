@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Forecast from './components/Forecast';
 
 const baseURL = process.env.ENDPOINT;
 const geoAPI = navigator.geolocation;
@@ -20,7 +21,11 @@ class Weather extends React.Component {
     super(props);
 
     this.state = {
+      lon: '',
+      lat: '',
       icon: '',
+      main: '',
+      description: '',
     };
   }
 
@@ -31,8 +36,13 @@ class Weather extends React.Component {
   getGeoSuccess = async (geolocationPosition) => {
     const weather = await getWeatherFromApi(geolocationPosition.coords.longitude,
       geolocationPosition.coords.latitude);
+
     this.setState({
       icon: weather.icon.slice(0, -1),
+      lon: geolocationPosition.coords.longitude,
+      lat: geolocationPosition.coords.latitude,
+      main: weather.main,
+      description: weather.description,
     });
   };
 
@@ -41,16 +51,23 @@ class Weather extends React.Component {
   };
 
   render() {
-    const { icon } = this.state;
+    const {
+      icon, lon, lat, main, description,
+    } = this.state;
 
     return (
       icon !== ''
         ? (
-          <div className="icon">
-            { icon && <img src={`/img/${icon}.svg`} alt="weather status icon" />}
-          </div>
+          <>
+            <div className="icon">
+              { icon && <img src={`/img/${icon}.svg`} alt="weather status icon" />}
+              <h2>{`Now: ${main}`}</h2>
+              <p>{description}</p>
+            </div>
+            <Forecast longitude={lon} latitude={lat} />
+          </>
         )
-        : <div><h1>Click allow geolocation to get current weather information</h1></div>
+        : <div><h1>Click allow geolocation to get current weather information 🫠</h1></div>
     );
   }
 }
