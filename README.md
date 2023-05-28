@@ -1,5 +1,32 @@
 # Weatherapp
 
+## Try It
+You can preview app. Project is deployed to Azure cloud using Azure Container Apps.
+https://weatherapp.mangoisland-07331620.westeurope.azurecontainerapps.io/
+
+
+Also you can run localy using docker-compose. In main direcory run.
+```bash
+APPID=your_openweatherapp_app_id docker compose up
+```
+Script will create development environment, also you can preview in your browser. Connecting to the frontend ```localhost:8000``` , and backend  ```localhost:9000```
+
+Of corse you can run frontend and backend seperatly using docker:
+```bash
+# run in backend folder
+docker build -t weatherapp_backend . && docker run --rm -e APPID=yourappidkey -i -p 9000:9000 --name weatherapp_backend -t weatherapp_backend
+# run in frontend folder
+docker build -t weatherapp_frontend . && docker run --rm -e ENDPOINT=https://localhost:9000/api -i -p 8000:8000 --name weatherapp_frontend -t weatherapp_frontend
+```
+
+API provides 2 GET methods:
+- ```api/weather?lon={longitude}&lat={latitude}``` : returning current weather status for specified location.
+- ```api/forecast?lon={longitude}&lat={latitude}``` :  returning 5, 3 hours setep forecasts for specified location.
+
+## What's done?:
+You can check current progress following issue https://github.com/piooz/weatherapp/issues/1
+
+## Exercise
 There was a beautiful idea of building an app that would show the upcoming weather. The developers wrote a nice backend and a frontend following the latest principles and - to be honest - bells and whistles. However, the developers did not remember to add any information about the infrastructure or even setup instructions in the source code.
 
 Luckily we now have [docker compose](https://docs.docker.com/compose/) saving us from installing the tools on our computer, and making sure the app looks (and is) the same in development and in production. All we need is someone to add the few missing files!
