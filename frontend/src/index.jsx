@@ -61,9 +61,9 @@ class Weather extends React.Component {
           <>
             <div className="icon">
               { icon && <img src={`/img/${icon}.svg`} alt="weather status icon" />}
-              <h2>{`Now: ${main}`}</h2>
-              <p>{description}</p>
             </div>
+            <h2>{`Now: ${main} - ${description}`}</h2>
+            <hr />
             <Forecast longitude={lon} latitude={lat} />
           </>
         )
