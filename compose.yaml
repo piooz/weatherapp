@@ -10,9 +10,7 @@ services:
     networks:
       - weatherapp
     environment:
-      APPID: "3c1c25d36b4d2706a3647a591e83717c"
-      # MAP_ENDPOINT:
-      # TARGET_CITY:
+      APPID: ${APPID}
     volumes:
       - ./backend:/app
     command: npm run dev
